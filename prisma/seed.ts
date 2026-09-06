@@ -43,7 +43,7 @@ async function main() {
     }
   }
 
-  await db.mlModel.upsert({
+  await db.mLModel.upsert({
     where:{id:"00000000-0000-0000-0000-000000000001"},
     update:{name:"Fraud Ensemble v1",version:"1.0.0",algorithm:"Hybrid Rules + Gradient Boosting + Anomaly"},
     create:{id:"00000000-0000-0000-0000-000000000001",name:"Fraud Ensemble v1",version:"1.0.0",algorithm:"Hybrid Rules + Gradient Boosting + Anomaly",active:true,metrics:{auc:0.93,confidence:0.914}}
