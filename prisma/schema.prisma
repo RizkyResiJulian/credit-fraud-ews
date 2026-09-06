@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum CaseStatus {
+  OPEN
+  INVESTIGATING
+  CONFIRMED_FRAUD
+  FALSE_POSITIVE
+  CLOSED
+}
+
+model Customer {
+  id           String @id @default(uuid())
+  customerNo   String @unique
+  name         String
+  phone        String?
+  email        String?
+  identityNo   String?
+  address     String?
+  createdAt    DateTime @default(now())
+  applications CreditApplication[]
+}
+
+model CreditApplication {
+  id             String @id @default(uuid())
+  applicationNo  String @unique
+  customerName   String
+  phone          String?
+  monthlyIncome  Float?
+  loanAmount     Float?
+  purpose        String?
+  createdAt      DateTime @default(now())
+  customerId     String?
+  customer       Customer? @relation(fields: [customerId], references: [id])
+  fraudScore     FraudScore?
+  fraudCases     FraudCase[]
+  importRecordId String?
+  importRecord   ImportRecord? @relation(fields: [importRecordId], references: [id])
+}
+
+model FraudScore {
+  id            String @id @default(uuid())
+  applicationId String @unique
+  score         Float
+  riskLevel     RiskLevel
+  ruleScore     Float?
+  mlScore       Float?
+  anomalyScore  Float?
+  confidence    Float?
+  reasons       Json?
+  createdAt     DateTime @default(now())
+  application   CreditApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+model FraudCase {
+  id            String @id @default(uuid())
+  applicationId String
+  status        CaseStatus @default(OPEN)
+  priority      RiskLevel
+  summary       String?
+  notes         Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  application   CreditApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+model FraudIndicator {
+  id          String @id @default(uuid())
+  code        String @unique
+  name        String
+  category    String
+  weight      Float
+  description String
+  active      Boolean @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model FraudRule {
+  id          String @id @default(uuid())
+  code        String @unique
+  name        String
+  expression  String
+  weight      Float
+  active      Boolean @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model DataImport {
+  id          String @id @default(uuid())
+  fileName    String
+  fileType    String
+  status      String
+  totalRows   Int @default(0)
+  validRows   Int @default(0)
+  errorRows   Int @default(0)
+  createdAt   DateTime @default(now())
+  records     ImportRecord[]
+}
+
+model ImportRecord {
+  id           String @id @default(uuid())
+  importId     String
+  rowNumber    Int
+  rawData      Json
+  normalized   Json?
+  status       String @default("PENDING")
+  errorMessage String?
+  import       DataImport @relation(fields: [importId], references: [id], onDelete: Cascade)
+  applications CreditApplication[]
+}
+
+model MLModel {
+  id          String @id @default(uuid())
+  name        String
+  version     String
+  algorithm   String
+  metrics     Json?
+  active      Boolean @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model AuditLog {
+  id         String @id @default(uuid())
+  actor      String?
+  action     String
+  entity     String
+  entityId   String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+}

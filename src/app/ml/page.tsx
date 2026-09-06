@@ -1,0 +1,11 @@
+import { BrainCircuit, Activity, BarChart3, GitBranch, Sparkles } from "lucide-react";
+
+export default function MLPage(){return <div className="space-y-5">
+  <div><div className="text-xs text-slate-500">MODEL INTELLIGENCE</div><h1 className="text-3xl font-bold mt-1">ML Intelligence</h1><p className="text-sm text-slate-500 mt-2">Monitoring model, anomaly detection, dan explainability.</p></div>
+  <div className="grid xl:grid-cols-4 gap-4"><K icon={BrainCircuit} t="Active model" v="Fraud Ensemble v1"/><K icon={Activity} t="Model confidence" v="91.4%"/><K icon={BarChart3} t="AUC / ROC" v="0.93"/><K icon={GitBranch} t="Features" v="48"/></div>
+  <div className="grid lg:grid-cols-2 gap-5">
+    <div className="card p-6"><h2 className="font-semibold flex items-center gap-2"><Sparkles size={17} className="text-violet-300"/> Feature importance</h2><p className="text-xs text-slate-500 mt-1 mb-6">Top signals used by the model.</p>{[["Phone reuse",.92],["Address similarity",.84],["Device graph",.78],["Income anomaly",.71],["Application velocity",.64],["Credit stress",.42]].map(([n,v])=><div key={n as string} className="mb-4"><div className="flex justify-between text-xs"><span>{n as string}</span><span>{Math.round((v as number)*100)}%</span></div><div className="h-2 bg-slate-800 rounded-full mt-2"><div className="h-full rounded-full bg-violet-500" style={{width:`${(v as number)*100}%`}}/></div></div>)}</div>
+    <div className="card p-6"><h2 className="font-semibold">Anomaly detection</h2><p className="text-xs text-slate-500 mt-1 mb-6">Unsupervised signals not covered by static rules.</p><div className="rounded-2xl bg-rose-400/5 border border-rose-400/10 p-5"><div className="text-xs text-rose-300">NEW PATTERN · ANM-029</div><div className="text-xl font-bold mt-2">Device + employer cluster</div><p className="text-xs text-slate-500 leading-6 mt-3">37 applications show unusual similarity in device, employer, income band, and submission time.</p><div className="mt-5 text-3xl font-bold">94%</div><div className="text-[11px] text-slate-600">anomaly score</div></div></div>
+  </div>
+</div>}
+function K({icon:Icon,t,v}:any){return <div className="card p-5"><Icon size={18} className="text-violet-300"/><div className="text-xs text-slate-500 mt-4">{t}</div><div className="font-bold mt-1">{v}</div></div>}

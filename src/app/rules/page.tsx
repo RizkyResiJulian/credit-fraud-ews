@@ -1,0 +1,8 @@
+import { INDICATORS } from "@/lib/fraud-engine";
+import { SlidersHorizontal, ShieldCheck } from "lucide-react";
+
+export default function RulesPage(){return <div className="space-y-5">
+  <div><div className="text-xs text-slate-500">DETECTION CONFIGURATION</div><h1 className="text-3xl font-bold mt-1">Rules & Indicators</h1><p className="text-sm text-slate-500 mt-2">Atur indikator, bobot, dan threshold EWS.</p></div>
+  <div className="grid sm:grid-cols-3 gap-4"><div className="card p-5"><div className="text-xs text-slate-500">Active indicators</div><div className="text-2xl font-bold mt-2">{INDICATORS.length}</div></div><div className="card p-5"><div className="text-xs text-slate-500">Rule engine</div><div className="text-2xl font-bold text-emerald-300 mt-2">ONLINE</div></div><div className="card p-5"><div className="text-xs text-slate-500">Version</div><div className="text-2xl font-bold mt-2">v1.0</div></div></div>
+  <div className="card overflow-hidden"><div className="p-5 border-b border-[#1d2a3d]"><h2 className="font-semibold">Fraud indicator library</h2></div><div className="divide-y divide-[#1d2a3d]">{INDICATORS.map((i)=><div key={i.code} className="p-5 flex gap-4 items-center"><div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-300"><SlidersHorizontal size={17}/></div><div className="flex-1"><div className="text-sm font-medium">{i.name}</div><div className="text-[11px] text-slate-600 mt-1">{i.category} · {i.description}</div></div><div className="text-xs text-slate-500">Weight</div><div className="w-14 text-right font-bold">{i.weight}</div><div className="text-emerald-300"><ShieldCheck size={16}/></div></div>)}</div></div>
+</div>}

@@ -1,0 +1,7 @@
+import { Download, FileText, CalendarDays, ShieldAlert } from "lucide-react";
+
+export default function ReportsPage(){return <div className="space-y-5">
+  <div><div className="text-xs text-slate-500">REPORTING</div><h1 className="text-3xl font-bold mt-1">Reports</h1><p className="text-sm text-slate-500 mt-2">Ringkasan risiko dan investigasi untuk audit atau manajemen.</p></div>
+  <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">{[["Daily Fraud Summary","Daily","Fraud alert, risk distribution, top indicators"],["Investigation Queue","Operational","Open cases and SLA"],["Executive Risk Report","Monthly","Portfolio risk and fraud trend"]].map(([a,b,c])=><div key={a} className="card p-5"><FileText size={18} className="text-violet-300"/><div className="font-semibold mt-4">{a}</div><div className="text-[11px] text-slate-600 mt-1">{b}</div><p className="text-xs text-slate-500 leading-5 mt-4">{c}</p><button className="mt-5 px-3 py-2 rounded-lg border border-[#29374c] text-xs flex gap-2 items-center"><Download size={13}/> Generate</button></div>)}</div>
+  <div className="card p-6"><div className="flex gap-3"><CalendarDays className="text-slate-500"/><div><h2 className="font-semibold">Report controls</h2><p className="text-xs text-slate-500 mt-1">Export PDF/CSV dapat diaktifkan setelah storage/report worker ditambahkan.</p></div></div></div>
+</div>}
